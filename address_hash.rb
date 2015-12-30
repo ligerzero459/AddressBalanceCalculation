@@ -47,4 +47,6 @@ transactions.each do |tx|
   tx[:balance] = balance
 end
 
+transactions.reverse!
+
 puts transactions
