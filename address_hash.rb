@@ -9,7 +9,7 @@ require './models/transaction'
 require './models/input'
 require './models/output'
 
-address = 'PRQBLgPak9i2xWsdFWSMQfWEA8yWqieTKo'
+address = ''
 transactions = []
 balance = 0.0
 
@@ -21,7 +21,7 @@ outputs.each do |output|
       transaction_id: output.transaction_id,
       txid: Transaction.where(:id=>output.transaction_id).get(:txid),
       address: output.address,
-      value: output.value,
+      value: output.value.round(6),
       type: 'output',
       n: output.n,
       balance: 0.0
@@ -34,7 +34,7 @@ inputs.each do |input|
       transaction_id: input.transaction_id,
       txid: Transaction.where(:id=>input.transaction_id).get(:txid),
       address: input.address,
-      value: -input.value,
+      value: -input.value.round(6),
       type: 'input',
       n: input.vout,
       balance: 0.0
@@ -45,8 +45,8 @@ end
 transactions.sort_by! { |hsh| [hsh[:transaction_id], hsh[:n]] }
 
 transactions.each do |tx|
-  balance += tx[:value]
-  tx[:balance] = balance
+  balance += tx[:value].round(6)
+  tx[:balance] = balance.round(6)
 end
 
 transactions.reverse!
