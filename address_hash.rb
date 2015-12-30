@@ -9,7 +9,7 @@ require './models/transaction'
 require './models/input'
 require './models/output'
 
-address = ''
+address = 'PRQBLgPak9i2xWsdFWSMQfWEA8yWqieTKo'
 transactions = []
 balance = 0.0
 
@@ -19,6 +19,7 @@ inputs = Input.where(:address => address)
 outputs.each do |output|
   output_hash = {
       transaction_id: output.transaction_id,
+      txid: Transaction.where(:id=>output.transaction_id).get(:txid),
       address: output.address,
       value: output.value,
       type: 'output',
@@ -31,6 +32,7 @@ end
 inputs.each do |input|
   input_hash = {
       transaction_id: input.transaction_id,
+      txid: Transaction.where(:id=>input.transaction_id).get(:txid),
       address: input.address,
       value: -input.value,
       type: 'input',
