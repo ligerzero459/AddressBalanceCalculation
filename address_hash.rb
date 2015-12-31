@@ -49,8 +49,9 @@ outputs.each do |output|
 end
 
 inputs.each do |input|
-  if transactions.last[:transaction_id] == input.transaction_id
-    transactions.last[:value] += -input.value.round(6)
+  if transactions.detect { |f| f[:transaction_id] == input.transaction_id } != nil
+    tx = transactions.detect { |f| f[:transaction_id] == input.transaction_id }
+    tx[:value] += -input.value.round(6)
   else
     input_hash = {
         transaction_id: input.transaction_id,
