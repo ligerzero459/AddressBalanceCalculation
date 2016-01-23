@@ -25,7 +25,7 @@ outputs.each do |output|
           transaction_id: output.transaction_id,
           txid: Transaction.where(:id=>output.transaction_id).get(:txid),
           address: output.address,
-          value: output.value.round(6),
+          value: output.value.round(8),
           type: 'output',
           n: output.n,
           balance: 0.0
@@ -38,7 +38,7 @@ outputs.each do |output|
         transaction_id: output.transaction_id,
         txid: Transaction.where(:id=>output.transaction_id).get(:txid),
         address: output.address,
-        value: output.value.round(6),
+        value: output.value.round(8),
         type: 'output',
         n: output.n,
         balance: 0.0
@@ -51,13 +51,13 @@ end
 inputs.each do |input|
   if transactions.detect { |f| f[:transaction_id] == input.transaction_id } != nil
     tx = transactions.detect { |f| f[:transaction_id] == input.transaction_id }
-    tx[:value] += -input.value.round(6)
+    tx[:value] += -input.value.round(8)
   else
     input_hash = {
         transaction_id: input.transaction_id,
         txid: Transaction.where(:id=>input.transaction_id).get(:txid),
         address: input.address,
-        value: -input.value.round(6),
+        value: -input.value.round(8),
         type: 'input',
         n: input.vout,
         balance: 0.0
@@ -71,8 +71,8 @@ end
 transactions.sort_by! { |hsh| [hsh[:transaction_id], hsh[:n]] }
 
 transactions.each do |tx|
-  balance += tx[:value].round(6)
-  tx[:balance] = balance.round(6)
+  balance += tx[:value].round(8)
+  tx[:balance] = balance.round(8)
 end
 
 transactions.reverse!
